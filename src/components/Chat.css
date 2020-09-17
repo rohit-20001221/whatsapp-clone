@@ -1,0 +1,69 @@
+.chat {
+  flex: 0.65;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat__header {
+  background-color: #ededed;
+  display: flex;
+  align-items: center;
+  height: 40px;
+  padding: 10px;
+}
+
+.chat__headerInfo {
+  flex: 1;
+  padding: 5px;
+}
+
+.chat__headerInfo > p {
+  font-size: 10px;
+}
+
+.chat__body {
+  flex: 1;
+  background-color: #e6ded4;
+  background-image: url("https://web.whatsapp.com/img/bg-chat-tile-light_686b98c9fdffef3f63127759e2057750.png");
+  /* opacity: 0.3; */
+  padding: 10px;
+  background-repeat: repeat-x;
+  background-position: center;
+  overflow-y: scroll;
+}
+
+.chat__body::-webkit-scrollbar {
+  width: 10px;
+}
+
+.chat__body::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+.chat__footer {
+  height: 50px;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background-color: #f0f0f0;
+}
+
+.chat__footer > form {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.chat__footer > form > input {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 10px;
+  border-radius: 20px;
+}
+
+.emoji__picker {
+  position: absolute;
+  bottom: 70px;
+  padding: 10px;
+}

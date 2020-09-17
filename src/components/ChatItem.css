@@ -1,0 +1,15 @@
+.chatItem {
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #dfe6e9;
+}
+
+.chatItem:hover {
+  background-color: lightgrey;
+}
+
+.chatItem__name {
+  margin-left: 5px;
+  font-weight: 500;
+}

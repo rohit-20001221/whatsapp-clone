@@ -28,7 +28,6 @@ function Chat() {
         <Avatar />
         <div className="chat__headerInfo">
           <h4>Room1</h4>
-          <p>last sceen 10min</p>
         </div>
         <div className="chat__headerIcons">
           <IconButton>

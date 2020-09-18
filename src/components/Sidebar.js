@@ -1,5 +1,5 @@
 import { Avatar, IconButton, Menu, MenuItem, Modal } from "@material-ui/core";
-import DonutLargeIcon from "@material-ui/icons/DonutLarge";
+import AddCircleIcon from "@material-ui/icons/AddCircle";
 import ChatIcon from "@material-ui/icons/Chat";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import SearchIcon from "@material-ui/icons/Search";
@@ -32,8 +32,8 @@ function Sidebar() {
       <div className="sidebar__header">
         <Avatar src={""} />
         <div className="sidebar__headerRight">
-          <IconButton>
-            <DonutLargeIcon className="header__icon" />
+          <IconButton title="join room">
+            <AddCircleIcon className="header__icon" />
           </IconButton>
           <IconButton title="create room" onClick={openModal}>
             <ChatIcon className="header__icon" />
@@ -42,7 +42,6 @@ function Sidebar() {
             <MoreVertIcon className="header__icon" />
           </IconButton>
           <Menu
-            id="simple-menu"
             anchorEl={anchorEl}
             keepMounted
             open={Boolean(anchorEl)}

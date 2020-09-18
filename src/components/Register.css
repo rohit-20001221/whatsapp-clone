@@ -19,6 +19,8 @@
 .register__container > form {
   display: flex;
   flex-direction: column;
+  margin-right: 20px;
+  margin-left: 20px;
 }
 
 .register__container > form > input {

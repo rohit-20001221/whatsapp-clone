@@ -1,5 +1,6 @@
 const express = require("express");
-const router = require("./routes");
+const apiRouter = require("./routes/api");
+const userRouter = require("./routes/user");
 const mongoose = require("mongoose");
 require("dotenv").config();
 
@@ -12,17 +13,14 @@ mongoose.Promise = global.Promise;
 
 //middlewares
 app.use(express.json()); // <-- data is in req.body variable
-app.use("/api", router);
+app.use("/api", apiRouter);
+app.use("/users", userRouter);
+
+const jwtMiddleWare = require("./middleware/jwt");
 
 //routes
 app.get("/", (req, res) => {
   res.status(200).send("hello world");
-});
-
-//error handling middleware
-app.use((err, req, res, next) => {
-  // console.log(err);
-  res.status(422).send({ error: err.message });
 });
 
 //listen

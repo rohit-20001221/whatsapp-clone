@@ -1,7 +1,7 @@
-import { Avatar, IconButton } from "@material-ui/core";
-import React, { useState } from "react";
+import { Avatar, IconButton, Menu, MenuItem } from "@material-ui/core";
+import React, { useState, useRef } from "react";
 import "./Chat.css";
-import SearchIcon from "@material-ui/icons/Search";
+// import SearchIcon from "@material-ui/icons/Search";
 import AttachFileIcon from "@material-ui/icons/AttachFile";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import SentimentVerySatisfiedOutlinedIcon from "@material-ui/icons/SentimentVerySatisfiedOutlined";
@@ -11,7 +11,13 @@ import Picker from "emoji-picker-react";
 
 function Chat() {
   const [emojiPicker, setEmojiPicker] = useState(true);
+  const [anchorEl, setAnchorEl] = useState(null);
   const [message, setMessage] = useState("");
+  const filePicker = useRef(null);
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   const onEmojiClick = (event, emojiObject) => {
     const message_ = message + emojiObject.emoji;
@@ -30,32 +36,31 @@ function Chat() {
           <h4>Room1</h4>
         </div>
         <div className="chat__headerIcons">
-          <IconButton>
+          {/* <IconButton>
             <SearchIcon />
-          </IconButton>
-          <IconButton>
+          </IconButton> */}
+          <IconButton
+            onClick={() => {
+              filePicker.current.click();
+            }}
+          >
             <AttachFileIcon />
           </IconButton>
-          <IconButton>
+          <IconButton onClick={(e) => setAnchorEl(e.currentTarget)}>
             <MoreVertIcon />
           </IconButton>
+          <Menu
+            anchorEl={anchorEl}
+            keepMounted
+            open={Boolean(anchorEl)}
+            onClose={handleClose}
+          >
+            <MenuItem onClick={handleClose}>Room Info</MenuItem>
+          </Menu>
         </div>
+        <input hidden type="file" ref={filePicker} />
       </div>
       <div className="chat__body">
-        <ChatMessage />
-        <ChatMessage />
-        <ChatMessage />
-        <ChatMessage />
-        <ChatMessage />
-        <ChatMessage />
-        <ChatMessage />
-        <ChatMessage />
-        <ChatMessage />
-        <ChatMessage />
-        <ChatMessage />
-        <ChatMessage />
-        <ChatMessage />
-        <ChatMessage />
         <ChatMessage />
         <ChatMessage />
         <ChatMessage />

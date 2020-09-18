@@ -46,3 +46,8 @@
   padding: 5px;
   text-decoration: none;
 }
+
+.register__error {
+  color: red;
+  padding: 10px;
+}

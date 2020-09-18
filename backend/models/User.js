@@ -5,8 +5,8 @@ const Schema = mongoose.Schema;
 const UserSchema = new Schema({
   email: {
     type: String,
-    required: true,
-    unique: true,
+    required: [true, "email field is required"],
+    unique: [true, "email must be unique"],
     match: /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i,
   },
   name: {
@@ -17,6 +17,7 @@ const UserSchema = new Schema({
     type: String,
     required: true,
   },
+  profile_pic: { type: String, default: "" },
   rooms: [String],
 });
 

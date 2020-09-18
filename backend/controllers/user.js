@@ -1,10 +1,20 @@
 const bcrypt = require("bcrypt");
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
+const fs = require("fs");
 
 exports.signUp = (req, res, next) => {
+  // console.log(req.file); // <-- got this due to multer middleware
+  let path;
+  if (req.file !== undefined) {
+    path = req.file.path;
+  } else {
+    path = "";
+  }
+  // console.log("assad");
   bcrypt.hash(req.body.password, 10, (err, hash) => {
     if (err) {
+      fs.unlinkSync(req.file.path);
       return res.status(500).json({
         error: err,
       });
@@ -13,6 +23,7 @@ exports.signUp = (req, res, next) => {
         email: req.body.email,
         name: req.body.name,
         password: hash,
+        profile_pic: path,
       });
       user
         .save()
@@ -23,6 +34,7 @@ exports.signUp = (req, res, next) => {
           });
         })
         .catch((err) => {
+          fs.unlinkSync(req.file.path);
           res.status(500).json({
             error: err,
           });
@@ -76,8 +88,8 @@ exports.login = (req, res, next) => {
             }
           );
           return res.status(200).json({
-            message: "auth successful",
             token: token,
+            user: user[0],
           });
         } else {
           return res.status(401).json({

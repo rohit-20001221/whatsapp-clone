@@ -5,11 +5,17 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import SearchIcon from "@material-ui/icons/Search";
 import ChatItem from "./ChatItem";
 import React, { useState } from "react";
+import { useStateValue } from "../StateProvider";
+// import Path from "path";
 import "./Sidebar.css";
+import { useHistory } from "react-router-dom";
 
 function Sidebar() {
   const [anchorEl, setAnchorEl] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
+  // eslint-disable-next-line
+  const [{ user }, dispatch] = useStateValue();
+  const history = useHistory();
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -27,10 +33,19 @@ function Sidebar() {
     event.preventDefault();
   };
 
+  const logoutUser = (event) => {
+    dispatch({
+      type: "USER",
+      user: null,
+      token: "",
+    });
+    history.replace("/login");
+  };
+
   return (
     <div className="sidebar">
       <div className="sidebar__header">
-        <Avatar src={""} />
+        <Avatar src={"http://localhost:4000/" + user?.profile_pic} alt="" />
         <div className="sidebar__headerRight">
           <IconButton title="join room">
             <AddCircleIcon className="header__icon" />
@@ -48,7 +63,7 @@ function Sidebar() {
             onClose={handleClose}
           >
             <MenuItem onClick={handleClose}>Profile</MenuItem>
-            <MenuItem onClick={handleClose}>Logout</MenuItem>
+            <MenuItem onClick={logoutUser}>Logout</MenuItem>
           </Menu>
           <Modal
             className="sidebar__modal"
@@ -60,6 +75,8 @@ function Sidebar() {
               <form onSubmit={createRoom}>
                 <h4>Room Name</h4>
                 <input type="text" />
+                <h4>Room Image</h4>
+                <input type="file" />
                 <button type="submit">create room</button>
               </form>
             </div>

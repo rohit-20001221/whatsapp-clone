@@ -28,6 +28,11 @@ function Chat() {
     setMessage(event.target.value);
   };
 
+  const sendMessage = (event) => {
+    event.preventDefault();
+    console.log(message);
+  };
+
   return (
     <div className="chat">
       <div className="chat__header">
@@ -90,9 +95,9 @@ function Chat() {
           </IconButton>
         </div>
 
-        <form>
+        <form onSubmit={sendMessage}>
           <input value={message} onChange={handleChangeInput} type="text" />
-          <IconButton>
+          <IconButton type="submit">
             <TelegramIcon />
           </IconButton>
         </form>

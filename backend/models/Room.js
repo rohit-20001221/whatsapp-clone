@@ -1,13 +1,9 @@
-const shortid = require("shortid");
+// const shortid = require("shortid");
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const Message = require("./Message");
+const MessageDB = require("./Message");
 
 const RoomSchema = new Schema({
-  room_id: {
-    type: String,
-    default: shortid.generate,
-  },
   room_name: {
     type: String,
     required: true,
@@ -20,7 +16,7 @@ const RoomSchema = new Schema({
     type: Date,
     default: Date.now,
   },
-  messages: [Message],
+  messages: [MessageDB.MessageSchema],
 });
 
 const Room = mongoose.model("room", RoomSchema);

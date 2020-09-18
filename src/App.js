@@ -2,7 +2,7 @@ import React from "react";
 import "./App.css";
 import {
   BrowserRouter as Router,
-  Redirect,
+  // Redirect, // <-- remove comment in production
   Route,
   Switch,
 } from "react-router-dom";
@@ -14,7 +14,7 @@ import { useStateValue } from "./StateProvider";
 
 function App() {
   // eslint-disable-next-line
-  const [{ user }, dispatch] = useStateValue();
+  const [{ user, token }, dispatch] = useStateValue();
 
   return (
     <Router>
@@ -25,7 +25,13 @@ function App() {
         <Route path="/login">
           <Login />
         </Route>
-        <Route
+        <Route path="/">
+          <div className="app">
+            <Sidebar />
+            <Chat />
+          </div>
+        </Route>
+        {/* <Route
           render={() => {
             if (user !== null) {
               return (
@@ -39,7 +45,7 @@ function App() {
             }
           }}
           path="/"
-        ></Route>
+        ></Route> */}
       </Switch>
     </Router>
   );

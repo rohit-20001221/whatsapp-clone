@@ -11,6 +11,7 @@ import Sidebar from "./components/Sidebar";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import { useStateValue } from "./StateProvider";
+import url from "./server";
 
 function App() {
   // eslint-disable-next-line
@@ -18,7 +19,7 @@ function App() {
   const headers = new Headers();
   headers.append("authorization", `Bearer ${token}`);
   useEffect(() => {
-    fetch("http://localhost:4000/api/rooms", { headers: headers })
+    fetch(`${url}/api/rooms`, { headers: headers })
       .then((res) => {
         return res.json();
       })

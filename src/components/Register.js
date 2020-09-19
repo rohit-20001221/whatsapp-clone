@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import "./Register.css";
 import { Link, useHistory } from "react-router-dom";
 // import axios from "../axios";
+import url from "../server";
 
 function Register() {
   const profilePicRef = useRef(null);
@@ -23,7 +24,7 @@ function Register() {
     // const headers = new Headers();
     // headers.append("Content-Type", "multipart/form-data");
 
-    fetch("http://localhost:4000/users/signup", {
+    fetch(`${url}/users/signup`, {
       method: "POST",
       body: fd,
       // headers: headers,

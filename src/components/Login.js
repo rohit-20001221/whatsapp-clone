@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./Login.css";
 import { Link, useHistory } from "react-router-dom";
 import { useStateValue } from "../StateProvider";
+import url from "../server";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -18,7 +19,7 @@ function Login() {
       password: password,
     };
 
-    fetch("http://localhost:4000/users/login", {
+    fetch(`${url}/users/login`, {
       method: "POST",
       body: JSON.stringify(payload),
       headers: {

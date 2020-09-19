@@ -9,6 +9,7 @@ import { useStateValue } from "../StateProvider";
 // import Path from "path";
 import "./Sidebar.css";
 import { useHistory } from "react-router-dom";
+import url from "../server";
 
 function Sidebar() {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -61,7 +62,7 @@ function Sidebar() {
     headers.append("authorization", `Bearer ${token}`);
     headers.append("Content-Type", "application/json");
 
-    fetch("http://localhost:4000/api/add/room", {
+    fetch(`${url}/api/add/room`, {
       method: "POST",
       body: JSON.stringify(data),
       headers: headers,
@@ -93,7 +94,7 @@ function Sidebar() {
     fd.append("room_image", roomImageRef.current.files[0]);
 
     console.log(token);
-    fetch("http://localhost:4000/api/create/room", {
+    fetch(`${url}/api/create/room`, {
       method: "POST",
       body: fd,
       headers: headers,
@@ -133,7 +134,7 @@ function Sidebar() {
           <ChatItem
             key={item._id}
             name={item.room_name}
-            image={"http://localhost:4000/" + item.room_image}
+            image={url + item.room_image}
             id={item._id}
           />
         );
@@ -144,7 +145,7 @@ function Sidebar() {
   return (
     <div className="sidebar">
       <div className="sidebar__header">
-        <Avatar src={"http://localhost:4000/" + user?.profile_pic} alt="" />
+        <Avatar src={url + user?.profile_pic} alt="" />
         <div className="sidebar__headerRight">
           <IconButton onClick={openJoinModal} title="join room">
             <AddCircleIcon className="header__icon" />

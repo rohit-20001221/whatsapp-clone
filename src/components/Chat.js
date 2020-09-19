@@ -10,6 +10,7 @@ import ChatMessage from "./ChatMessage";
 import Picker from "emoji-picker-react";
 import { useStateValue } from "../StateProvider";
 import io from "socket.io-client";
+import url from "../server";
 
 function Chat() {
   const [emojiPicker, setEmojiPicker] = useState(true);
@@ -51,7 +52,7 @@ function Chat() {
     headers.append("authorization", `Bearer ${token}`);
     headers.append("Content-Type", "application/json");
 
-    fetch(`http://localhost:4000/api/room/message/${currentRoom._id}`, {
+    fetch(`${url}/api/room/message/${currentRoom._id}`, {
       method: "POST",
       body: JSON.stringify(data),
       headers: headers,
@@ -91,7 +92,7 @@ function Chat() {
   };
 
   useEffect(() => {
-    const socket = io("http://localhost:4000");
+    const socket = io(url);
 
     socket.on("connect", () => {
       console.log("connected");
@@ -104,7 +105,7 @@ function Chat() {
 
       console.log(token);
       headers.append("authorization", `Bearer ${token}`);
-      fetch(`http://localhost:4000/api/room/message/latest?roomId=${id}`, {
+      fetch(`${url}/api/room/message/latest?roomId=${id}`, {
         headers: headers,
       })
         .then((res) => {
@@ -126,7 +127,7 @@ function Chat() {
   return (
     <div className="chat">
       <div className="chat__header">
-        <Avatar src={"http://localhost:4000/" + currentRoom?.room_image} />
+        <Avatar src={url + currentRoom?.room_image} />
         <div className="chat__headerInfo">
           <h4>{currentRoom?.room_name}</h4>
         </div>

@@ -1,13 +1,13 @@
 const Room = require("../models/Room");
 const User = require("../models/User");
-const fs = require("fs");
+// const fs = require("fs");
 const mongoose = require("mongoose");
 // const Message = require("../models/Message");
 
 exports.createRoom = (req, res) => {
   let path;
   if (req.file !== undefined) {
-    path = req.file.path;
+    path = req.file.location;
   } else {
     path = "";
   }
@@ -31,7 +31,7 @@ exports.createRoom = (req, res) => {
         });
     })
     .catch((err) => {
-      fs.unlinkSync(path);
+      // fs.unlinkSync(path);
       res.status(500).json({ error: err.message });
     });
 };
@@ -104,3 +104,8 @@ exports.latestMessage = (req, res) => {
       });
     });
 };
+
+// exports.simpleUpload = (req, res) => {
+//   console.log(req.file);
+//   res.send("hi");
+// };

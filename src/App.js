@@ -2,7 +2,7 @@ import React from "react";
 import "./App.css";
 import {
   BrowserRouter as Router,
-  // Redirect, // <-- remove comment in production
+  Redirect, // <-- remove comment in production
   Route,
   Switch,
 } from "react-router-dom";
@@ -25,13 +25,13 @@ function App() {
         <Route path="/login">
           <Login />
         </Route>
-        <Route path="/">
+        {/* <Route path="/">
           <div className="app">
             <Sidebar />
             <Chat />
           </div>
-        </Route>
-        {/* <Route
+        </Route> */}
+        <Route
           render={() => {
             if (user !== null) {
               return (
@@ -45,7 +45,7 @@ function App() {
             }
           }}
           path="/"
-        ></Route> */}
+        ></Route>
       </Switch>
     </Router>
   );

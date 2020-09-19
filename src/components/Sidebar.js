@@ -4,7 +4,7 @@ import ChatIcon from "@material-ui/icons/Chat";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import SearchIcon from "@material-ui/icons/Search";
 import ChatItem from "./ChatItem";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useStateValue } from "../StateProvider";
 // import Path from "path";
 import "./Sidebar.css";
@@ -13,24 +13,84 @@ import { useHistory } from "react-router-dom";
 function Sidebar() {
   const [anchorEl, setAnchorEl] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
+  const [joinModalOpen, setJoinModalOpen] = useState(false);
   // eslint-disable-next-line
-  const [{ user }, dispatch] = useStateValue();
+  const [{ user, token }, dispatch] = useStateValue();
   const history = useHistory();
 
+  //create room variables
+  const [roomName, setRoomName] = useState("");
+  const roomImageRef = useRef();
+
+  //join room variables
+
+  //close menu
   const handleClose = () => {
     setAnchorEl(null);
   };
 
+  //close create room modal
   const handleModalClose = () => {
     setModalOpen(false);
   };
 
+  //open create room modal
   const openModal = () => {
     setModalOpen(true);
   };
 
+  //open join room modal
+  const openJoinModal = () => {
+    setJoinModalOpen(true);
+  };
+
+  //close join room modal
+  const closeJoinModal = () => {
+    setJoinModalOpen(false);
+  };
+
+  //join room
+  const joinRoom = (event) => {
+    event.preventDefault();
+  };
+
+  //create room
   const createRoom = (event) => {
     event.preventDefault();
+    const fd = new FormData();
+    const headers = new Headers();
+
+    headers.append("authorization", `Bearer ${token}`);
+
+    fd.append("room_name", roomName);
+    // fd.append("token", token);
+    fd.append("room_image", roomImageRef.current.files[0]);
+
+    console.log(token);
+    fetch("http://localhost:4000/api/create/room", {
+      method: "POST",
+      body: fd,
+      headers: headers,
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("cant create room");
+        }
+        return res.json();
+      })
+      .then((data) => {
+        // console.log(data);
+        dispatch({
+          type: "USER",
+          user: data?.user,
+          token: token,
+        });
+        console.log(user);
+        handleModalClose();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const logoutUser = (event) => {
@@ -47,7 +107,7 @@ function Sidebar() {
       <div className="sidebar__header">
         <Avatar src={"http://localhost:4000/" + user?.profile_pic} alt="" />
         <div className="sidebar__headerRight">
-          <IconButton title="join room">
+          <IconButton onClick={openJoinModal} title="join room">
             <AddCircleIcon className="header__icon" />
           </IconButton>
           <IconButton title="create room" onClick={openModal}>
@@ -65,6 +125,7 @@ function Sidebar() {
             <MenuItem onClick={handleClose}>Profile</MenuItem>
             <MenuItem onClick={logoutUser}>Logout</MenuItem>
           </Menu>
+          {/* Create Room */}
           <Modal
             className="sidebar__modal"
             open={modalOpen}
@@ -74,10 +135,28 @@ function Sidebar() {
               <h3>create room!!</h3>
               <form onSubmit={createRoom}>
                 <h4>Room Name</h4>
-                <input type="text" />
+                <input
+                  onChange={(e) => setRoomName(e.target.value)}
+                  type="text"
+                />
                 <h4>Room Image</h4>
-                <input type="file" />
+                <input ref={roomImageRef} type="file" />
                 <button type="submit">create room</button>
+              </form>
+            </div>
+          </Modal>
+          {/* Join Room */}
+          <Modal
+            className="sidebar__modal"
+            open={joinModalOpen}
+            onClose={closeJoinModal}
+          >
+            <div className="sidebar__createRoom">
+              <h3>join room!!</h3>
+              <form onSubmit={joinRoom}>
+                <h4>Room Name</h4>
+                <input type="text" />
+                <button type="submit">join room</button>
               </form>
             </div>
           </Modal>

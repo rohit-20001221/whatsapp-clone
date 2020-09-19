@@ -18,7 +18,8 @@ exports.createRoom = (req, res) => {
     .then((room) => {
       User.findOneAndUpdate(
         { email: req.user.email },
-        { $push: { rooms: room._id } }
+        { $push: { rooms: room._id } },
+        { new: true }
       )
         .then((user) => {
           console.log(user);
@@ -37,7 +38,8 @@ exports.createRoom = (req, res) => {
 exports.addToRoom = (req, res) => {
   User.findOneAndUpdate(
     { email: req.user.email },
-    { $push: { rooms: req.body.room_id } }
+    { $push: { rooms: req.body.room_id } },
+    { new: true }
   )
     .then((user) => {
       res.status(200).json(user);

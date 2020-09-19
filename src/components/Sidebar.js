@@ -134,7 +134,7 @@ function Sidebar() {
           <ChatItem
             key={item._id}
             name={item.room_name}
-            image={url + item.room_image}
+            image={item.room_image}
             id={item._id}
           />
         );

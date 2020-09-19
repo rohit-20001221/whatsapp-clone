@@ -16,7 +16,7 @@ mongoose.Promise = global.Promise;
 //middlewares
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: "https://whatsapp-clone-b59ad.web.app",
   })
 );
 app.use(express.json()); // <-- data is in req.body variable

@@ -1,12 +1,21 @@
 import { Avatar } from "@material-ui/core";
 import React from "react";
 import "./ChatItem.css";
+import { useStateValue } from "../StateProvider";
 
-function ChatItem() {
+function ChatItem({ image, name, id }) {
+  // eslint-disable-next-line
+  const [{}, dispatch] = useStateValue();
+
   return (
-    <div className="chatItem">
-      <Avatar />
-      <p className="chatItem__name">Room 1</p>
+    <div
+      onClick={() => {
+        dispatch({ type: "CHANGE_ROOM", id: id });
+      }}
+      className="chatItem"
+    >
+      <Avatar src={image} />
+      <p className="chatItem__name">{name}</p>
     </div>
   );
 }

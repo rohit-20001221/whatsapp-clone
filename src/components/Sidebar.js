@@ -15,7 +15,7 @@ function Sidebar() {
   const [modalOpen, setModalOpen] = useState(false);
   const [joinModalOpen, setJoinModalOpen] = useState(false);
   // eslint-disable-next-line
-  const [{ user, token }, dispatch] = useStateValue();
+  const [{ user, token, rooms }, dispatch] = useStateValue();
   const history = useHistory();
 
   //create room variables
@@ -23,6 +23,7 @@ function Sidebar() {
   const roomImageRef = useRef();
 
   //join room variables
+  const [roomID, setRoomID] = useState("");
 
   //close menu
   const handleClose = () => {
@@ -52,6 +53,31 @@ function Sidebar() {
   //join room
   const joinRoom = (event) => {
     event.preventDefault();
+    console.log(roomID);
+    const data = {
+      room_id: roomID,
+    };
+    const headers = new Headers();
+    headers.append("authorization", `Bearer ${token}`);
+    headers.append("Content-Type", "application/json");
+
+    fetch("http://localhost:4000/api/add/room", {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: headers,
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        console.log(data);
+        dispatch({
+          type: "USER",
+          user: data.user,
+          token: token,
+        });
+        closeJoinModal();
+      });
   };
 
   //create room
@@ -95,11 +121,24 @@ function Sidebar() {
 
   const logoutUser = (event) => {
     dispatch({
-      type: "USER",
-      user: null,
-      token: "",
+      type: "LOGOUT",
     });
     history.replace("/login");
+  };
+
+  const renderRooms = () => {
+    if (rooms) {
+      return rooms.map((item) => {
+        return (
+          <ChatItem
+            key={item._id}
+            name={item.room_name}
+            image={"http://localhost:4000/" + item.room_image}
+            id={item._id}
+          />
+        );
+      });
+    }
   };
 
   return (
@@ -122,7 +161,7 @@ function Sidebar() {
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
-            <MenuItem onClick={handleClose}>Profile</MenuItem>
+            {/* <MenuItem onClick={handleClose}>Profile</MenuItem> */}
             <MenuItem onClick={logoutUser}>Logout</MenuItem>
           </Menu>
           {/* Create Room */}
@@ -154,8 +193,12 @@ function Sidebar() {
             <div className="sidebar__createRoom">
               <h3>join room!!</h3>
               <form onSubmit={joinRoom}>
-                <h4>Room Name</h4>
-                <input type="text" />
+                <h4>Room ID</h4>
+                <input
+                  value={roomID}
+                  onChange={(e) => setRoomID(e.target.value)}
+                  type="text"
+                />
                 <button type="submit">join room</button>
               </form>
             </div>
@@ -166,10 +209,7 @@ function Sidebar() {
         <SearchIcon />
         <input placeholder="search or start new chat" type="text" />
       </div>
-      <div className="sidebar__chats">
-        <ChatItem />
-        <ChatItem />
-      </div>
+      <div className="sidebar__chats">{renderRooms()}</div>
     </div>
   );
 }

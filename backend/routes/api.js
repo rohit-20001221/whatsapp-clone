@@ -11,5 +11,12 @@ router.post(
   apiController.createRoom
 );
 router.post("/add/room", jwtMiddleware, apiController.addToRoom);
+router.get("/rooms", jwtMiddleware, apiController.getRooms);
+router.post("/room/message/:roomId", jwtMiddleware, apiController.sendMessage);
+router.get(
+  "/room/message/:roomId/latest",
+  jwtMiddleware,
+  apiController.latestMessage
+);
 
 module.exports = router;

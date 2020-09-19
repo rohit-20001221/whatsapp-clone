@@ -16,6 +16,7 @@ const RoomSchema = new Schema({
     type: Date,
     default: Date.now,
   },
+  room_image: { type: String, default: "" },
   messages: [MessageDB.MessageSchema],
 });
 

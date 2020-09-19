@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./App.css";
 import {
   BrowserRouter as Router,
@@ -15,6 +15,24 @@ import { useStateValue } from "./StateProvider";
 function App() {
   // eslint-disable-next-line
   const [{ user, token }, dispatch] = useStateValue();
+  const headers = new Headers();
+  headers.append("authorization", `Bearer ${token}`);
+  useEffect(() => {
+    fetch("http://localhost:4000/api/rooms", { headers: headers })
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        dispatch({
+          type: "FETCH_ROOMS",
+          rooms: data.rooms,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    // eslint-disable-next-line
+  }, [user]);
 
   return (
     <Router>

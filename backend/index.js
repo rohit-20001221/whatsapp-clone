@@ -2,8 +2,14 @@ const express = require("express");
 const apiRouter = require("./routes/api");
 const userRouter = require("./routes/user");
 const mongoose = require("mongoose");
+const Room = require("./models/Room");
 const cors = require("cors");
 require("dotenv").config();
+
+const roomStream = Room.watch();
+roomStream.on("change", (changes) => {
+  console.log(changes);
+});
 
 //app config
 const dbString = process.env.MONGO_URL;

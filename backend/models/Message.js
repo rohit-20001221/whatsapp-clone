@@ -6,13 +6,17 @@ const MessageSchema = new Schema({
     type: String,
     required: true,
   },
+  user_name: {
+    type: String,
+    required: true,
+  },
   text: {
     type: String,
     required: true,
   },
   created_at: {
-    type: Date,
-    default: Date.now,
+    type: String,
+    required: true,
   },
 });
 

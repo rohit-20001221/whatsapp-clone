@@ -6,11 +6,6 @@ const Room = require("./models/Room");
 const cors = require("cors");
 require("dotenv").config();
 
-const roomStream = Room.watch();
-roomStream.on("change", (changes) => {
-  console.log(changes);
-});
-
 //app config
 const dbString = process.env.MONGO_URL;
 
@@ -29,15 +24,27 @@ app.use("/uploads", express.static("uploads")); // <-- make uploads folder publi
 app.use("/api", apiRouter);
 app.use("/users", userRouter);
 
-const jwtMiddleWare = require("./middleware/jwt");
-
-// //routes
-// app.get("/", (req, res) => {
-//   res.status(200).send("hello world");
-// });
-
 //listen
 const port = process.env.PORT || 4000;
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log(`server is listening on ${port}`);
+});
+
+const io = require("socket.io")(server);
+
+io.on("connection", (socket) => {
+  console.log(socket.id);
+});
+
+//listen for database streams
+const roomStream = Room.watch();
+roomStream.on("change", (change) => {
+  console.log(change);
+
+  try {
+    const id = change.documentKey._id;
+    if (change.updateDescription.updatedFields) {
+      io.emit("newMessage", { id: id });
+    }
+  } catch (error) {}
 });

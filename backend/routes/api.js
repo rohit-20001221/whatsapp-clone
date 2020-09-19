@@ -12,11 +12,7 @@ router.post(
 );
 router.post("/add/room", jwtMiddleware, apiController.addToRoom);
 router.get("/rooms", jwtMiddleware, apiController.getRooms);
+router.get("/room/message/latest", jwtMiddleware, apiController.latestMessage);
 router.post("/room/message/:roomId", jwtMiddleware, apiController.sendMessage);
-router.get(
-  "/room/message/:roomId/latest",
-  jwtMiddleware,
-  apiController.latestMessage
-);
 
 module.exports = router;

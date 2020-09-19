@@ -26,6 +26,24 @@ const reducer = (state, action) => {
         rooms: [],
         currentRoom: null,
       };
+    case "GOT_MESSAGE":
+      const id_ = action.id;
+      const message_ = action.message;
+      const rooms__ = state.rooms.map((item) => {
+        if (item._id === id_) {
+          item.messages = [...item.messages, message_];
+          return item;
+        } else {
+          return item;
+        }
+      });
+
+      let current_room_ = state.currentRoom;
+      if (current_room_._id === id_) {
+        current_room_.messages = [...current_room_.messages, message_];
+      }
+
+      return { ...state, rooms: rooms__, currentRoom: current_room_ };
     default:
       return state;
   }

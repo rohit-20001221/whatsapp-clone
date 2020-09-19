@@ -90,7 +90,7 @@ exports.sendMessage = (req, res) => {
 };
 
 exports.latestMessage = (req, res) => {
-  const id = req.params.roomId;
+  const id = req.query.roomId;
   Room.findOne({ _id: id }, { messages: true })
     .then(({ messages }) => {
       const message = messages.pop();

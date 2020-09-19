@@ -127,7 +127,7 @@ function Chat() {
   return (
     <div className="chat">
       <div className="chat__header">
-        <Avatar src={url + currentRoom?.room_image} />
+        <Avatar src={currentRoom?.room_image} />
         <div className="chat__headerInfo">
           <h4>{currentRoom?.room_name}</h4>
         </div>

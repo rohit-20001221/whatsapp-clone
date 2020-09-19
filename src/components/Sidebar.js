@@ -145,7 +145,7 @@ function Sidebar() {
   return (
     <div className="sidebar">
       <div className="sidebar__header">
-        <Avatar src={url + user?.profile_pic} alt="" />
+        <Avatar src={user?.profile_pic} alt="" />
         <div className="sidebar__headerRight">
           <IconButton onClick={openJoinModal} title="join room">
             <AddCircleIcon className="header__icon" />

@@ -8,6 +8,7 @@ import SentimentVerySatisfiedOutlinedIcon from "@material-ui/icons/SentimentVery
 import TelegramIcon from "@material-ui/icons/Telegram";
 import ChatMessage from "./ChatMessage";
 import Picker from "emoji-picker-react";
+import Snackbar from "@material-ui/core/Snackbar";
 import { useStateValue } from "../StateProvider";
 import io from "socket.io-client";
 import url from "../server";
@@ -17,6 +18,7 @@ function Chat() {
   const [anchorEl, setAnchorEl] = useState(null);
   const [message, setMessage] = useState("");
   const filePicker = useRef(null);
+  const [openSnack, setOpenSnack] = useState(false);
 
   //current room
   //eslint-disable-next-line
@@ -151,7 +153,7 @@ function Chat() {
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
-            <MenuItem onClick={handleClose}>Room Info</MenuItem>
+            <MenuItem onClick={() => setOpenSnack(true)}>Room Info</MenuItem>
           </Menu>
         </div>
         <input hidden type="file" ref={filePicker} />
@@ -179,6 +181,13 @@ function Chat() {
       <div className="emoji__picker" hidden={emojiPicker}>
         <Picker onEmojiClick={onEmojiClick} />
       </div>
+      <Snackbar
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        open={openSnack}
+        onClose={() => setOpenSnack(false)}
+        message={"room id is " + currentRoom?._id}
+        key={"room-0221"}
+      />
     </div>
   );
 }

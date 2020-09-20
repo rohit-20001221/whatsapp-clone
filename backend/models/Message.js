@@ -14,6 +14,10 @@ const MessageSchema = new Schema({
     type: String,
     required: true,
   },
+  file: {
+    path: String,
+    filetype: String,
+  },
   created_at: {
     type: String,
     required: true,

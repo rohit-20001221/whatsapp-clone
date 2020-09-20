@@ -14,6 +14,12 @@ router.post("/add/room", jwtMiddleware, apiController.addToRoom);
 router.get("/rooms", jwtMiddleware, apiController.getRooms);
 router.get("/room/message/latest", jwtMiddleware, apiController.latestMessage);
 router.post("/room/message/:roomId", jwtMiddleware, apiController.sendMessage);
+router.post(
+  "/room/message/:roomId/media",
+  jwtMiddleware,
+  upload.single("file"),
+  apiController.sendMessage
+);
 // router.post("/upload", upload.single("image"), apiController.simpleUpload);
 
 module.exports = router;

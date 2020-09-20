@@ -158,7 +158,18 @@ function Chat() {
         </div>
         <input hidden type="file" ref={filePicker} />
       </div>
-      <div className="chat__body">{renderMessages()}</div>
+      <div className="chat__body">
+        {/* <ChatMessage
+          name={"rohit"}
+          text={"i am programmer"}
+          image={
+            "https://content.techgig.com/photo/75755485/Are-you-a-programmer-You-can-make-money-with-these-12-ideas-instantly.jpg"
+          }
+          created_at={"time"}
+          key={122323}
+        /> */}
+        {renderMessages()}
+      </div>
 
       <div className="chat__footer">
         <div className="chat__emoji">

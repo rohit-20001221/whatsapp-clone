@@ -67,3 +67,25 @@
   bottom: 70px;
   padding: 10px;
 }
+
+.chat__bodyFile {
+  display: flex;
+  flex: 1;
+  background-color: #e6ded4;
+  padding: 10px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.chat__bodyFileIcon {
+  padding: 15px;
+}
+
+.chat__bodyFileButtons > button {
+  margin: 3px;
+}
+
+.chat__bodyFileButtons > h5 {
+  padding: 5px;
+}

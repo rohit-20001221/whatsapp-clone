@@ -91,12 +91,13 @@ exports.sendMessage = (req, res) => {
 
 exports.sendMediaMessage = (req, res) => {
   const id = req.params.roomId;
-  const filePath = req?.file.location || "";
-  const fileType = req?.file.mimetype || "";
+  const filePath = req.file.location || "";
+  const fileType = req.file.mimetype || "";
   const messages = {
-    user_email: req.user.email,
-    user_name: req.user.name,
-    text: req.body.text,
+    user_email: req.body.user_email,
+    user_name: req.body.user_name,
+    text: "",
+    created_at: req.body.created_at,
     file: { path: filePath, filetype: fileType },
   };
   Room.findByIdAndUpdate({ _id: id }, { $push: { messages: messages } }).exec(

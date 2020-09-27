@@ -6,6 +6,7 @@ import AttachFileIcon from "@material-ui/icons/AttachFile";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import SentimentVerySatisfiedOutlinedIcon from "@material-ui/icons/SentimentVerySatisfiedOutlined";
 import TelegramIcon from "@material-ui/icons/Telegram";
+import FileCopyIcon from "@material-ui/icons/FileCopy";
 import ChatMessage from "./ChatMessage";
 import Picker from "emoji-picker-react";
 import Snackbar from "@material-ui/core/Snackbar";
@@ -19,6 +20,7 @@ function Chat() {
   const [message, setMessage] = useState("");
   const filePicker = useRef(null);
   const [openSnack, setOpenSnack] = useState(false);
+  const [isFilePresent, setIsFilePresent] = useState(false);
 
   //current room
   //eslint-disable-next-line
@@ -63,12 +65,47 @@ function Chat() {
     setMessage("");
   };
 
+  const sendMediaMessage = (event) => {
+    event.preventDefault();
+    const file = filePicker.current.files[0];
+    const fd = new FormData();
+
+    fd.append("user_email", user.email);
+    fd.append("user_name", user.name);
+    fd.append("created_at", new Date().toDateString());
+    fd.append("file", file);
+    const headers = new Headers();
+    headers.append("authorization", `Bearer ${token}`);
+
+    fetch(`${url}/api/room/message/${currentRoom._id}/media`, {
+      method: "POST",
+      body: fd,
+      headers: headers,
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("cant upload file");
+        }
+
+        return res.json();
+      })
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    setIsFilePresent(false);
+  };
+
   const renderMessages = () => {
     let messages = currentRoom?.messages || [];
     messages = Array.from(new Set(messages));
 
     return messages.map((msg, i) => {
-      if (msg !== undefined && msg.user_email === user.email) {
+      console.log(msg);
+      if (msg !== undefined && msg !== null && msg.user_email === user.email) {
         return (
           <ChatMessage
             name={msg.user_name}
@@ -76,21 +113,46 @@ function Chat() {
             created_at={msg.created_at}
             isReceiver={true}
             key={i}
+            image={msg?.file?.path}
           />
         );
-      } else if (msg !== undefined) {
+      } else if (msg !== undefined && msg !== null) {
         return (
           <ChatMessage
             name={msg.user_name}
             text={msg.text}
             created_at={msg.created_at}
             key={i}
+            image={msg?.file?.path}
           />
         );
       } else {
         return <div key={i}></div>;
       }
     });
+  };
+
+  //render the body according to the file
+  const renderBody = () => {
+    if (isFilePresent) {
+      return (
+        <div className="chat__bodyFile">
+          <FileCopyIcon fontSize={"large"} className="chat__bodyFileIcon" />
+          <h5>{filePicker.current.files[0].name}</h5>
+          <div className="chat__bodyFileButtons">
+            <button onClick={sendMediaMessage}>send</button>
+            <button onClick={() => setIsFilePresent(false)}>cancel</button>
+          </div>
+        </div>
+      );
+    } else {
+      return <div className="chat__body">{renderMessages()}</div>;
+    }
+  };
+
+  const getFile = (event) => {
+    console.log(filePicker.current.files);
+    setIsFilePresent(true);
   };
 
   useEffect(() => {
@@ -156,20 +218,10 @@ function Chat() {
             <MenuItem onClick={() => setOpenSnack(true)}>Room Info</MenuItem>
           </Menu>
         </div>
-        <input hidden type="file" ref={filePicker} />
+        <input onInput={getFile} hidden type="file" ref={filePicker} />
       </div>
-      <div className="chat__body">
-        {/* <ChatMessage
-          name={"rohit"}
-          text={"i am programmer"}
-          image={
-            "https://content.techgig.com/photo/75755485/Are-you-a-programmer-You-can-make-money-with-these-12-ideas-instantly.jpg"
-          }
-          created_at={"time"}
-          key={122323}
-        /> */}
-        {renderMessages()}
-      </div>
+
+      {renderBody()}
 
       <div className="chat__footer">
         <div className="chat__emoji">

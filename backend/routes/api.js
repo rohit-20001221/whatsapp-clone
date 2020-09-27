@@ -18,7 +18,7 @@ router.post(
   "/room/message/:roomId/media",
   jwtMiddleware,
   upload.single("file"),
-  apiController.sendMessage
+  apiController.sendMediaMessage
 );
 // router.post("/upload", upload.single("image"), apiController.simpleUpload);
 

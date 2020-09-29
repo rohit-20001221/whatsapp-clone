@@ -56,75 +56,80 @@ function Sidebar() {
 
   //join room
   const joinRoom = (event) => {
-    event.preventDefault();
-    setJoinRoomFlag(true);
-    console.log(roomID);
-    const data = {
-      room_id: roomID,
-    };
-    const headers = new Headers();
-    headers.append("authorization", `Bearer ${token}`);
-    headers.append("Content-Type", "application/json");
+    if (roomID) {
+      event.preventDefault();
+      setJoinRoomFlag(true);
+      console.log(roomID);
+      const data = {
+        room_id: roomID,
+      };
+      const headers = new Headers();
+      headers.append("authorization", `Bearer ${token}`);
+      headers.append("Content-Type", "application/json");
 
-    fetch(`${url}/api/add/room`, {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers: headers,
-    })
-      .then((res) => {
-        return res.json();
+      fetch(`${url}/api/add/room`, {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: headers,
       })
-      .then((data) => {
-        console.log(data);
-        dispatch({
-          type: "USER",
-          user: data.user,
-          token: token,
+        .then((res) => {
+          return res.json();
+        })
+        .then((data) => {
+          console.log(data);
+          dispatch({
+            type: "USER",
+            user: data.user,
+            token: token,
+          });
+          setJoinRoomFlag(false);
+          closeJoinModal();
         });
-        setJoinRoomFlag(false);
-        closeJoinModal();
-      });
+    }
   };
 
   //create room
   const createRoom = (event) => {
-    event.preventDefault();
-    setCreateRoomFlag(true);
-    const fd = new FormData();
-    const headers = new Headers();
+    if (roomName !== "") {
+      event.preventDefault();
+      setCreateRoomFlag(true);
+      const fd = new FormData();
+      const headers = new Headers();
 
-    headers.append("authorization", `Bearer ${token}`);
+      headers.append("authorization", `Bearer ${token}`);
 
-    fd.append("room_name", roomName);
-    // fd.append("token", token);
-    fd.append("room_image", roomImageRef.current.files[0]);
+      fd.append("room_name", roomName);
+      // fd.append("token", token);
+      fd.append("room_image", roomImageRef.current.files[0]);
 
-    console.log(token);
-    fetch(`${url}/api/create/room`, {
-      method: "POST",
-      body: fd,
-      headers: headers,
-    })
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error("cant create room");
-        }
-        return res.json();
+      console.log(token);
+      fetch(`${url}/api/create/room`, {
+        method: "POST",
+        body: fd,
+        headers: headers,
       })
-      .then((data) => {
-        // console.log(data);
-        dispatch({
-          type: "USER",
-          user: data?.user,
-          token: token,
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error("cant create room");
+          }
+          return res.json();
+        })
+        .then((data) => {
+          // console.log(data);
+          dispatch({
+            type: "USER",
+            user: data?.user,
+            token: token,
+          });
+          console.log(user);
+          setCreateRoomFlag(false);
+          handleModalClose();
+        })
+        .catch((err) => {
+          setCreateRoomFlag(false);
+          console.log(err);
         });
-        console.log(user);
-        setCreateRoomFlag(false);
-        handleModalClose();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    }
   };
 
   const logoutUser = (event) => {
@@ -185,6 +190,7 @@ function Sidebar() {
                 <input
                   onChange={(e) => setRoomName(e.target.value)}
                   type="text"
+                  value={roomName}
                 />
                 <h4>Room Image</h4>
                 <input ref={roomImageRef} type="file" />

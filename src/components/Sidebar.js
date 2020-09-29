@@ -15,6 +15,9 @@ function Sidebar() {
   const [anchorEl, setAnchorEl] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [joinModalOpen, setJoinModalOpen] = useState(false);
+  const [createRoomFlag, setCreateRoomFlag] = useState(false);
+  const [joinRoomFlag, setJoinRoomFlag] = useState(false);
+
   // eslint-disable-next-line
   const [{ user, token, rooms }, dispatch] = useStateValue();
   const history = useHistory();
@@ -54,6 +57,7 @@ function Sidebar() {
   //join room
   const joinRoom = (event) => {
     event.preventDefault();
+    setJoinRoomFlag(true);
     console.log(roomID);
     const data = {
       room_id: roomID,
@@ -77,6 +81,7 @@ function Sidebar() {
           user: data.user,
           token: token,
         });
+        setJoinRoomFlag(false);
         closeJoinModal();
       });
   };
@@ -84,6 +89,7 @@ function Sidebar() {
   //create room
   const createRoom = (event) => {
     event.preventDefault();
+    setCreateRoomFlag(true);
     const fd = new FormData();
     const headers = new Headers();
 
@@ -113,6 +119,7 @@ function Sidebar() {
           token: token,
         });
         console.log(user);
+        setCreateRoomFlag(false);
         handleModalClose();
       })
       .catch((err) => {
@@ -181,7 +188,9 @@ function Sidebar() {
                 />
                 <h4>Room Image</h4>
                 <input ref={roomImageRef} type="file" />
-                <button type="submit">create room</button>
+                <button hidden={createRoomFlag} type="submit">
+                  create room
+                </button>
               </form>
             </div>
           </Modal>
@@ -200,7 +209,9 @@ function Sidebar() {
                   onChange={(e) => setRoomID(e.target.value)}
                   type="text"
                 />
-                <button type="submit">join room</button>
+                <button hidden={joinRoomFlag} type="submit">
+                  join room
+                </button>
               </form>
             </div>
           </Modal>

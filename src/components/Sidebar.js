@@ -56,8 +56,8 @@ function Sidebar() {
 
   //join room
   const joinRoom = (event) => {
-    if (roomID) {
-      event.preventDefault();
+    event.preventDefault();
+    if (roomID !== "") {
       setJoinRoomFlag(true);
       console.log(roomID);
       const data = {
@@ -90,8 +90,8 @@ function Sidebar() {
 
   //create room
   const createRoom = (event) => {
+    event.preventDefault();
     if (roomName !== "") {
-      event.preventDefault();
       setCreateRoomFlag(true);
       const fd = new FormData();
       const headers = new Headers();

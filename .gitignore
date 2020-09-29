@@ -24,3 +24,7 @@ yarn-error.log*
 
 test_ids
 change.txt
+
+.firebase/
+.firebaserc
+firebase.json
